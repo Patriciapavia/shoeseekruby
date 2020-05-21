@@ -1,0 +1,24 @@
+
+
+
+
+<h1 class="current-category"> <%= params[:category]%></h1>
+<% if @shops.count == 0%>
+  <h1>There are no books currently in this category</h1>
+ <% else %>
+      <% @shops.each do |shop|%>
+ <div class="">
+    <div class="col-md-3">
+    	<div class="listing">
+      <%= image_tag shop.image if shop.image.attached? %>
+   
+
+ <h2><%= link_to "#{shop.title} - #{shop.color}- #{number_to_currency(shop.price)}", shop_path(shop.id) %></h2>
+
+  </div>
+</div>
+<%end%>
+<%end%>
+
+
+

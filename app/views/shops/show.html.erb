@@ -1,0 +1,49 @@
+
+
+ <div class="container">
+      <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 box-shadow">
+            <ul class="list-unstyled mt-3 mb-4">
+              <li><h1><%= @shop.title%></h1></li>
+              <li><p><%= @shop.description%></p></li>
+              <li><%= image_tag(@shop.image) if @shop.image.attached? %></li>
+            </ul>
+           <button data-stripe="payment" class= "btn btn-lg btn-block btn-primary">Check Out <%= number_to_currency(@shop.price) %></button>
+       <% if user_signed_in? %>
+
+       <% if @shop.user_id == current_user.id %>
+          <h1><%=link_to "Edit", edit_shops_path(@shop)%></h1>
+          <h1><%= link_to 'Delete', @shop, method: :delete, data: { confirm: 'Are you sure?' } %></h1>
+        <%end%>
+        <%end%>
+      </div>
+ </div>
+ 
+
+  <% if user_signed_in? && current_user.id != @shop.user_id %>
+      <%= link_to "Message #{@shop.user.email}", conversations_path(sender_id: current_user.id, recipient_id: @shop.user.id), method: 'post', class:"button is-link" %>
+    <% elsif user_signed_in? && current_user.id == @shop.user_id  %>
+      <%= link_to "Conversations", conversations_path(@Conversation) %>
+    <% else %>
+
+    <%= link_to "Sign up to message #{@trade.user.email}", new_user_registration_path %>
+    <% end %>
+
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+  document
+    .querySelector("[data-stripe='payment']")
+    .addEventListener("click", () => {
+      const stripe = Stripe(
+        "<%= Rails.application.credentials.dig(:stripe, :public_key) %>"
+      );
+
+      stripe.redirectToCheckout({
+        sessionId: "<%= @session_id %>"
+      });
+    });
+</script>
+
+

@@ -1,0 +1,44 @@
+
+<% if shop.errors.any? %>
+    <div class="errors">
+        <% shop.errors.full_messages.each do |error| %>
+            <p><%= error %></p>
+        <% end %>
+    </div>
+<% end %>
+
+
+<%= simple_form_for @shop do |f| %>
+
+<%= select_tag(:category_id, options_for_select(@categories), :prompt => "Select category") %>
+
+<%= f.input :title, label: "Shoes title" %>
+<%= f.input :description %>
+<%= f.input :color %>
+<%= f.input :price %>
+<%= f.input :image  %>
+
+
+<%= f.button :submit, value: "Create"%>
+<% end %>
+
+<!-- # <%= form_with model: shop, local: true do |form| %>
+
+#  <div>
+#  	 <%= form.label :title%>
+#  	 <%= form.text_field :title, value: shop.title %>
+#  </div>
+#  <div>
+#  	 <%= form.label :description %>
+#  	 <%= form.text_area :description, value: shop.description%>
+#  </div>
+#  <div>
+#  	 <%= form.label :price%>
+#  	 <%= form.number_field :price, value: shop.price %>
+#  </div>
+
+#  <div>
+#  	<%= form.submit value: "Create" %>
+#  </div>
+#  
+# <%end%> -->
